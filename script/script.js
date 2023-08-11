@@ -12,7 +12,7 @@ var charm_mod = 0
 var vigor_mod = 0
 var loyalty_mod = 0
 
-var perks = []
+var perklist = []
 
 var learning_mod_charmwork = 0
 var learning_mod_divination = 0
@@ -26,20 +26,22 @@ var learning_mod_transfiguration = 0
 var learning_mod_herbology = 0
 var learning_mod_healing = 0
 
-var skill_magical_theory = 0
-var skill_muggle_knowledge = 0
-var skill_insight = 0
-var skill_determination = 0
-var skill_investigation = 0
-var skill_persuasion = 0
-var skill_intimidation = 0
-var skill_deception = 0
-var skill_athletics = 0
-var skill_dexterity = 0
-var skill_stealth = 0
-var skill_creature_care = 0
-var skill_perception = 0
-var skill_luck = 0
+var skilldict = {
+    "skill_magical_theory": 0,
+    "skill_muggle_knowledge": 0,
+    "skill_insight": 0,
+    "skill_determination": 0,
+    "skill_investigation": 0,
+    "skill_persuasion": 0,
+    "skill_intimidation": 0,
+    "skill_deception": 0,
+    "skill_athletics": 0,
+    "skill_dexterity": 0,
+    "skill_stealth": 0,
+    "skill_creature_care": 0,
+    "skill_perception": 0,
+    "skill_luck": 0,
+}
 
 var casting_lvl_charmwork = 0
 var casting_lvl_divination = 0
@@ -149,7 +151,12 @@ function refreshmods() {
 
 function addperk() {
     const perklistlookup = document.getElementById("perklist");
-    if (perklistlookup.value != "No perks currently selected") {
+    const perklistlookup2 = document.getElementById("perk-list");
+    console.log(perklistlookup.innerHTML)
+    if (perklistlookup2.innerHTML == "No perks currently selected.") {
+        perklistlookup2.innerHTML = ""
+    }
+
         perknamelookup = perklistlookup.value 
         if (perknamelookup != "No Perk Selected") {
             perkcontainer = document.createElement("button");
@@ -171,7 +178,7 @@ function addperk() {
         }
 
     }
-}
+
 
 function updatedesc() {
     const perklistlookup = document.getElementById("perklist");
@@ -233,34 +240,34 @@ function rollstats(perk) {
 }
 
 function updateskills() {
-    skill_magical_theory = smarts_mod
-    document.getElementById("skill_magical_theory").innerHTML = skill_magical_theory
-    skill_muggle_knowledge = smarts_mod
-    document.getElementById("skill_muggle_knowledge").innerHTML = skill_muggle_knowledge
-    skill_insight = smarts_mod
-    document.getElementById("skill_insight").innerHTML = skill_insight
-    skill_determination = grit_mod
-    document.getElementById("skill_determination").innerHTML = skill_determination
-    skill_investigation = grit_mod
-    document.getElementById("skill_investigation").innerHTML = skill_investigation
-    skill_persuasion = charm_mod
-    document.getElementById("skill_persuasion").innerHTML = skill_persuasion
-    skill_intimidation = charm_mod
-    document.getElementById("skill_intimidation").innerHTML = skill_intimidation
-    skill_deception = charm_mod
-    document.getElementById("skill_deception").innerHTML = skill_deception
-    skill_athletics = vigor_mod
-    document.getElementById("skill_athletics").innerHTML = skill_athletics
-    skill_dexterity = vigor_mod
-    document.getElementById("skill_dexterity").innerHTML = skill_dexterity
-    skill_stealth = vigor_mod
-    document.getElementById("skill_stealth").innerHTML = skill_stealth
-    skill_creature_care = loyalty_mod
-    document.getElementById("skill_creature_care").innerHTML = skill_creature_care
-    skill_perception = loyalty_mod
-    document.getElementById("skill_perception").innerHTML = skill_perception
-    skill_luck = loyalty_mod
-    document.getElementById("skill_luck").innerHTML = skill_luck
+    skilldict["skill_magical_theory"] = smarts_mod
+    document.getElementById("skill_magical_theory").innerHTML = skilldict["skill_magical_theory"]
+    skilldict["skill_muggle_knowledge"] = smarts_mod
+    document.getElementById("skill_muggle_knowledge").innerHTML = skilldict["skill_muggle_knowledge"]
+    skilldict["skill_insight"] = smarts_mod
+    document.getElementById("skill_insight").innerHTML = skilldict["skill_insight"]
+    skilldict["skill_determination"] = grit_mod
+    document.getElementById("skill_determination").innerHTML = skilldict["skill_determination"]
+    skilldict["skill_investigation"] = grit_mod
+    document.getElementById("skill_investigation").innerHTML = skilldict["skill_investigation"]
+    skilldict["skill_persuasion"] = charm_mod
+    document.getElementById("skill_persuasion").innerHTML = skilldict["skill_persuasion"]
+    skilldict["skill_intimidation"] = charm_mod
+    document.getElementById("skill_intimidation").innerHTML = skilldict["skill_intimidation"]
+    skilldict["skill_deception"] = charm_mod
+    document.getElementById("skill_deception").innerHTML = skilldict["skill_deception"]
+    skilldict["skill_athletics"] = vigor_mod
+    document.getElementById("skill_athletics").innerHTML = skilldict["skill_athletics"]
+    skilldict["skill_dexterity"] = vigor_mod
+    document.getElementById("skill_dexterity").innerHTML = skilldict["skill_dexterity"]
+    skilldict["skill_stealth"] = vigor_mod
+    document.getElementById("skill_stealth").innerHTML = skilldict["skill_stealth"]
+    skilldict["skill_creature_care"] = loyalty_mod
+    document.getElementById("skill_creature_care").innerHTML = skilldict["skill_creature_care"]
+    skilldict["skill_perception"] = loyalty_mod
+    document.getElementById("skill_perception").innerHTML = skilldict["skill_perception"]
+    skilldict[ "skill_luck"] = loyalty_mod
+    document.getElementById("skill_luck").innerHTML = skilldict[ "skill_luck"]
 
 }
 
@@ -315,18 +322,30 @@ function remstat(x) {
     clickedstat = clickedstat.concat("stat",x,"score");
     let stattochange = document.getElementById(clickedstat);
     if (stattochange.value > 0) {
-        stattochange.value -= 1
+        stattochange.value -= 1;
     
         let newtotal = "";
         let totalform = document.getElementById("totalscore");
-        newtotal = totalform.value
+        newtotal = totalform.value;
         newtotal = newtotal.substring(newtotal.length-2);
-        console.log(newtotal)
-        newtotal -= 1
+        console.log(newtotal);
+        newtotal -= 1;
         let output = ""
         totalform.value = output.concat(newtotal);
         refreshmods()
 
     }
-
 }
+
+
+    function addskill(skill) {
+        let skilltochange = document.getElementById(skill);
+        skilltochange.innerHTML -= -1;
+        skilldict[skill] -= -1
+    }
+    
+    function remskill(skill) {
+        let skilltochange = document.getElementById(skill);
+        skilltochange.innerHTML -= 1;
+        skilldict[skill] -= 1
+    }
