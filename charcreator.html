@@ -20,6 +20,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
+    <script src = "data/female_first_name.js"></script>
+    <script src = "data/male_first_name.js"></script>
+    <script src = "data/last_name.js"></script>
     <script src = "script/script.js"></script>
 </head>
 
@@ -33,8 +36,9 @@
         
         <div class="input-group input-group-sm mb-3">
           <span class="input-group-text" id="inputGroup-sizing-sm">Character Name:</span>
-          <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #af804b;"></i></button>
+          <input type="text" class="form-control" id="charname" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          <button class="btn btn-outline-secondary" onclick="rollname(true);" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #cf76cf;"></i></button>
+          <button class="btn btn-outline-secondary" onclick="rollname(false);" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #7d8ed8;"></i></button>
         </div>
         <div class="input-group input-group-sm mb-3">
           <label class="input-group-text" for="inputGroupSelect01">Character Level:</label>
@@ -174,6 +178,8 @@
         <span class="input-group-text" id="inputGroup-sizing-sm">Mod: </span>
         <input type="text" class="form-control"   id = "stat5mod" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
       </div>
+
+
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>

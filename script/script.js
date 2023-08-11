@@ -46,7 +46,18 @@ function gethighestvalues(inputarray,num) {
     return inputarray
 }
 
-
+async function rollname(gender) {
+    var jsonout
+    if (gender == true) {
+        var firstnameoutput = female_first_names[Math.floor(Math.random() * female_first_names.length)];
+        var lastnameoutput = last_names[Math.floor(Math.random() * last_names.length)];
+        document.getElementById("charname").value = firstnameoutput.concat(" ", lastnameoutput)
+    } else {
+        var firstnameoutput = male_first_names[Math.floor(Math.random() * male_first_names.length)];
+        var lastnameoutput = last_names[Math.floor(Math.random() * last_names.length)];
+        document.getElementById("charname").value = firstnameoutput.concat(" ", lastnameoutput)
+    }
+}
 
 function rollstats(perk) {
     let rollset = rd6(8,1,6)
