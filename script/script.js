@@ -46,8 +46,7 @@ function gethighestvalues(inputarray,num) {
     return inputarray
 }
 
-async function rollname(gender) {
-    var jsonout
+function rollname(gender) {
     if (gender == true) {
         var firstnameoutput = female_first_names[Math.floor(Math.random() * female_first_names.length)];
         var lastnameoutput = last_names[Math.floor(Math.random() * last_names.length)];
