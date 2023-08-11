@@ -1,0 +1,51 @@
+body {
+    background-color: #fff4e8;
+}
+
+nav {
+    background-color: #c5ae96;
+}
+
+.navbar-brand{
+    color: darkred;
+    font-size:32px;
+}
+
+#maindiv {
+    padding-top: 40px;
+}
+
+h5 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight:600;
+}
+h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight:600;
+}
+li:before {
+  content: "\f72b"; /* FontAwesome Unicode */
+  font-family: FontAwesome;
+  display: inline-block;
+  margin-left: 50px;
+  width: var(--icon-space);
+}
+
+li span {
+    margin-left: 15px;
+}
+
+
+.form-control {
+    background-color: #faf4ec;
+}
+
+.input-group-text {
+    background-color: #d4b58d;
+    font-weight:600;
+    color: darkred;
+}
