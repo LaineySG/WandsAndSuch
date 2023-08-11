@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="style/style.css">
     <script src = "data/female_first_name.js"></script>
     <script src = "data/male_first_name.js"></script>
+    <script src = "data/perks.js"></script>
     <script src = "data/last_name.js"></script>
     <script src = "script/script.js"></script>
 </head>
@@ -37,8 +38,9 @@
         <div class="input-group input-group-sm mb-3">
           <span class="input-group-text" id="inputGroup-sizing-sm">Character Name:</span>
           <input type="text" class="form-control" id="charname" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-          <button class="btn btn-outline-secondary" onclick="rollname(true)" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #cf76cf;"></i></button>
-          <button class="btn btn-outline-secondary" onclick="rollname(false)" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #7d8ed8;"></i></button>
+          <button class="btn btn-outline-secondary" onclick="rollname(1)" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #cf76cf;"></i></button>
+          <button class="btn btn-outline-secondary" onclick="rollname(3)" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #899499;"></i></button>
+          <button class="btn btn-outline-secondary" onclick="rollname(2)" type="button" id="button-addon2"><i class="fa-solid fa-dice" style="color: #7d8ed8;"></i></button>
         </div>
         <div class="input-group input-group-sm mb-3">
           <label class="input-group-text" for="inputGroupSelect01">Character Level:</label>
@@ -75,7 +77,7 @@
           </select>
         </div>
         <p>You character's year will typically start at 1. A graduate or teacher will not have a school year.</p>
-      <h5>Select character virtues</h5>
+      <h5>Step 2: Select character virtues</h5>
       <p>A character in Wands & Such has virtues, which determine their skills and abilities in different scenarios. These Virtues include smarts, grit, charm, vigor and loyalty. A "learning bonus" affects how quickly your character picks up new spells and how easily they can become a practiced caster of that spell.</p>
       
       <h4>Smarts</h4>
@@ -133,8 +135,8 @@
       <p> 3) If you want to roll stats, roll 8D6 and choose the highest 5 die, and distribute the sum of those 5 die in any way you choose. If you choose not to take a perk, add an additional 2 to the sum. The digital stat roller will also assign the numbers - feel free to reassign however you wish. </p><br></p>
       <p> If you are creating a character above level 1, you gain 2 virtue points per level, or 1 perk per level.</p><p>Each virtue has a virtue modifier. This will be automatically calculated based on your virtue score. A virtue score modifier can also be manually calculated with the formula (ceil(virtue score / 2) - 2). You can also find a table in the rulebook.</p><br><br>
 
-    <span>Roll stats (no perk - 24 points): <button onclick="rollstats(false)" class="btn btn-outline-secondary" type="button" id="noperkroll"><i class="fa-solid fa-dice" style="color: #af804b;"></i></button></span><br><br>
-    <span>Randomize stats (With perk - 22 points): <button onclick="rollstats(true)" class="btn btn-outline-secondary" type="button" id="perkroll"><i class="fa-solid fa-dice" style="color: #af804b;"></i></button></span><br><br>
+    <span>Roll stats (no perk - 8d6 drop lowest 3): <button onclick="rollstats(false)" class="btn btn-sm btn-outline-secondary" type="button" id="noperkroll"><i class="fa-solid fa-dice" style="color: #af804b;"></i></button></span><br><br>
+    <span>Randomize stats (With perk -  8d6 drop lowest 3 then add 2): <button onclick="rollstats(true)" class="btn btn-sm btn-outline-secondary" type="button" id="perkroll"><i class="fa-solid fa-dice" style="color: #af804b;"></i></button></span><br><br>
 
     
     <div class="input-group input-group-sm mb-3">
@@ -145,44 +147,303 @@
       <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-sm">Smarts</span>
         <input type="text" class="form-control"  id = "stat1score" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-        <button class="btn btn-outline-secondary" type="button" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
-        <button class="btn btn-outline-secondary" type="button" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="addstat(1)" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="remstat(1)"  id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
         <span class="input-group-text" id="inputGroup-sizing-sm">Mod: </span>
         <input type="text" class="form-control"  id = "stat1mod" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
       </div>        <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-sm">Grit</span>
         <input type="text" class="form-control"  id = "stat2score" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-        <button class="btn btn-outline-secondary" type="button" id="addstat2"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
-        <button class="btn btn-outline-secondary" type="button" id="remstat2"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="addstat(2)" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="remstat(2)" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
         <span class="input-group-text" id="inputGroup-sizing-sm">Mod: </span>
         <input type="text" class="form-control"  id = "stat2mod"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
       </div>        <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-sm">Charm</span>
         <input type="text" class="form-control"  id = "stat3score" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-        <button class="btn btn-outline-secondary" type="button" id="addstat3"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
-        <button class="btn btn-outline-secondary" type="button" id="remstat3"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="addstat(3)" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="remstat(3)" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
         <span class="input-group-text" id="inputGroup-sizing-sm">Mod: </span>
         <input type="text" class="form-control"   id = "stat3mod" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
       </div>        <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-sm">Vigor</span>
         <input type="text" class="form-control" id = "stat4score" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-        <button class="btn btn-outline-secondary" type="button" id="addstat4"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
-        <button class="btn btn-outline-secondary" type="button" id="remstat4"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="addstat(4)" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="remstat(4)" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
         <span class="input-group-text" id="inputGroup-sizing-sm">Mod: </span>
         <input type="text" class="form-control"   id = "stat4mod" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
       </div>        <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-sm">Loyalty</span>
         <input type="text" class="form-control" id = "stat5score"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-        <button class="btn btn-outline-secondary" type="button" id="addstat5"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
-        <button class="btn btn-outline-secondary" type="button" id="remstat5"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="addstat(5)" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+        <button class="btn btn-outline-secondary" type="button" onclick="remstat(5)" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
         <span class="input-group-text" id="inputGroup-sizing-sm">Mod: </span>
         <input type="text" class="form-control"   id = "stat5mod" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div><br><br>
+      
+      <h5>Step 3: Select Perk if applicable</h5>
+      <p>If you elected to not gain the bonus +2 from the previous step, or if you are creating a character above level 1, and giving up your +2 ability points at a given level, you may gain one or more perks. The same perk cannot be chosen more than once, and some perks have prerequisites. A perk represents an individual boon, curse, or specialty.</p><br><br>
+      <div class="input-group input-group-sm mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Perks:</label>
+        <select class="form-select" onchange="updatedesc()" id="perklist">
+          <option selected>No Perk Selected</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" onclick="addperk()" id="remstat1"><i class="fa-solid fa-user-plus" style="color: #af804b;"></i> Add to character</button>
       </div>
+      <div class="contentdiv" id="perk-description">Please select a perk to see its description.</div><br>
+      <div class="contentdiv" id="perk-list">No perks currently selected.</div>
 
+      
+      <h5>Step 4,5: Learning Modifiers and Skills</h5>
+      <p>Your character's learning modifiers are set automatically based on your virtue scores. Your character skills are also set automatically, however you gain an additional 10 points to distribute as you see fit.</p>
+      <div style="display:flex">
+        <div style="flex:1 1 auto">
+          <table class="table-custom">
+            <thead>
+              <tr scope="col">
+                <td colspan="3"><h5>Learning Modifiers</h5></td>
+              </tr>
+              <tr>
+                <th scope="col"><h4>Name</h4></th>
+                <th scope="col"><h4>Virtue</h4></th>
+                <th scope="col"><h4>Learning Modifier</h4></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Charmwork</td>
+                <td>Smarts</td>
+                <td id="learning_mod_charmwork">0</td>
+              </tr>
+              <tr>
+                <td>Divinations</td>
+                <td>Smarts</td>
+                <td id="learning_mod_divinations">0</td>
+              </tr>
+              <tr>
+                <td>Defensive Magic</td>
+                <td>Grit</td>
+                <td id="learning_mod_defensive">0</td>
+              </tr>
+              <tr>
+                <td>Potion-Making</td>
+                <td>Grit</td>
+                <td id="learning_mod_potions">0</td>
+              </tr>
+              <tr>
+                <td>Curses</td>
+                <td>Charm</td>
+                <td id="learning_mod_curses">0</td>
+              </tr>
+              <tr>
+                <td>Hexes</td>
+                <td>Charm</td>
+                <td id="learning_mod_hexes">0</td>
+              </tr>
+              <tr>
+                <td>Jinxes</td>
+                <td>Charm</td>
+                <td id="learning_mod_jinxes">0</td>
+              </tr>
+              <tr>
+                <td>Offensive Magic</td>
+                <td>Vigor</td>
+                <td id="learning_mod_offensive">0</td>
+              </tr>
+              <tr>
+                <td>Transfiguration</td>
+                <td>Vigor</td>
+                <td id="learning_mod_transfiguration">0</td>
+              </tr>
+              <tr>
+                <td>Herbology</td>
+                <td>Loyalty</td>
+                <td id="learning_mod_herbology">0</td>
+              </tr>
+              <tr>
+                <td>Healing</td>
+                <td>Loyalty</td>
+                <td id="learning_mod_healing">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="flex:1 1 auto">
+          <table class="table-custom">
+            <thead>
+              <tr scope="col">
+                <td colspan="4"><h5>Skills</h5></td>
+              </tr>
+              <tr>
+                <th scope="col"><h4>Skill</h4></th>
+                <th scope="col"><h4>Virtue</h4></th>
+                <th scope="col" colspan="2"><h4>Modifier</h4></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Magical Theory</td>
+                <td>Smarts</td>
+                <td id="skill_magical_theory">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_magical_theory')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_magical_theory')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Muggle Knowledge</td>
+                <td>Smarts</td>
+                <td id="skill_muggle_knowledge">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              </tr>
+              <tr>
+                <td>Insight</td>
+                <td>Smarts</td>
+                <td id="skill_insight">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Determination</td>
+                <td>Grit</td>
+                <td id="skill_determination">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Investigation</td>
+                <td>Grit</td>
+                <td id="skill_investigation">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Persuasion</td>
+                <td>Charm</td>
+                <td id="skill_persuasion">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Intimidation</td>
+                <td>Charm</td>
+                <td id="skill_intimidation">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Deception</td>
+                <td>Charm</td>
+                <td id="skill_deception">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Athletics</td>
+                <td>Vigor</td>
+                <td id="skill_athletics">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Dexterity</td>
+                <td>Vigor</td>
+                <td id="skill_dexterity">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Stealth</td>
+                <td>Vigor</td>
+                <td id="skill_stealth">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Creature Care</td>
+                <td>Loyalty</td>
+                <td id="skill_creature_care">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Perception</td>
+                <td>Loyalty</td>
+                <td id="skill_perception">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Luck</td>
+                <td>Loyalty</td>
+                <td id="skill_luck">0</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="addskill('skill_muggle_knowledge')" id="addstat1"><i class="fa-solid fa-plus" style="color: #af804b;"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" onclick="remskill('skill_muggle_knowledge')" id="remstat1"><i class="fa-solid fa-minus" style="color: #af804b;"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <h5>Step 6: Heritage</h5>
+      <p>Your character's heritage defines their upbringing, starting knowledge, and home-life. A character can be born to a muggle (non-wizarding) family, a mixed family with 1 wizard or witch, and 1 muggle parent, or a pureblood family with 2 wizard or witch parents.</p>
 
+      <h4>Muggle-Born</h4>
+      <p>A Muggle-born character is typically entirely unaware of the wizarding world until receiving their acceptance letter to Hogwarts. Muggle-borns have in-depth knowledge of muggles and muggle society and are typically determined to prove themselves.</p><br>
+      <ul>
+        <li class="wandlist"> <span>Gain a +5 heritage bonus to your Muggle Knowledge skill for being raised by muggles.</span></li>
+        <li class="wandlist"> <span>Gain a +3 heritage bonus to your Luck skill</span></li>
+        <li class="wandlist"> <span>Gain a +1 heritage bonus to your Determination skill (To reflect adversity).</span></li>
+      </ul>
+
+      
+      <h4>Mixed Heritage</h4>
+      <p>A character with both wizarding and muggle parents is typically knowledgeable about both societies, and has some level of magical expertise.</p><br>
+      <ul>
+        <li class="wandlist"> <span>Gain a +2 heritage bonus to your Muggle Knowledge skill</span></li>
+        <li class="wandlist"> <span>Gain a +1 heritage bonus to your Magical Theory skill. </span></li>
+        <li class="wandlist"> <span>Add 1 casting level to a single category of magic (as seen under “casting levels” on your character sheet). Choose any 2 spells (Charm, Hex, Curse, Jinx) or potions from the first-year list and add them to your spell-book as “Practiced”.</span></li>
+      </ul>
+
+      
+      <h4>Pure-blood Heritage</h4>
+      <p>A pure-blood character is typically very knowledgeable about magic and quite skilled in it, having picked up a few tricks while growing up and watching their family.</p><br>
+      <ul>
+        <li class="wandlist"> <span>Gain a +2 heritage bonus to “Magical Theory”.</span></li>
+        <li class="wandlist"> <span>Add 1 casting level each to any two categories of magic. </span></li>
+        <li class="wandlist"> <span>Choose 3 spells (Charm, Hex, Curse, Jinx) or potions from the first-year list, and add them to your spell-book as “Practiced”.</span></li>
+      </ul>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script>includeHTML();</script>
+    <script>ListFiller();</script>
 </body>
 </html>

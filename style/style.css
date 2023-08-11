@@ -50,3 +50,34 @@ li span {
     font-weight:600;
     color: darkred;
 }
+.contentdiv {
+    border-radius: 15px;
+    background-color: #e7d6c0;
+    border: 2px solid #bda68a;
+    padding: 10px;
+    margin: 10px;
+}
+.perkbtn {
+    border-radius: 15px;
+    color: darkred;
+    background-color: #e7d6c0;
+    border: 2px solid #bda68a;
+    padding: 10px;
+    margin: 5px;
+}
+tr, th, td, tbody, thead {
+    border: 2px solid #bda68a;
+    background-color: #e7d6c0;
+    padding: 5px;
+}
+th, td {
+    text-align:center
+}
+.table-custom{
+    background-color: #e7d6c0;
+    border: 2px solid #bda68a;
+    margin: 10px;
+    padding: 20px;
+    width: 95%;
+    border-radius: 15px;
+}
