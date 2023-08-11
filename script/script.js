@@ -26,6 +26,15 @@ var learning_mod_transfiguration = 0
 var learning_mod_herbology = 0
 var learning_mod_healing = 0
 
+var grade_tokens = 0
+
+var mb_muggle_knowledge_heritage_bonus = 0
+var mix_muggle_knowledge_heritage_bonus = 0
+var mix_magical_theory_heritage_bonus = 0
+var pure_magical_theory_heritage_bonus = 0
+var mb_determination_heritage_bonus = 0
+var mb_luck_heritage_bonus = 0
+
 var skilldict = {
     "skill_magical_theory": 0,
     "skill_muggle_knowledge": 0,
@@ -54,6 +63,8 @@ var casting_lvl_offensive = 0
 var casting_lvl_transfiguration = 0
 var casting_lvl_herbology = 0
 var casting_lvl_healing = 0
+
+var level = 1
 /* Global variables */
 
 function includeHTML() {
@@ -84,7 +95,21 @@ function includeHTML() {
   }
 }
 
-
+function updatelevel() {
+    level = document.getElementById("level-selected").value
+    if (level > 1) {
+        grade_tokens = (40 * (level-1))
+    } else {
+        grade_tokens = 0
+    }
+        let chosenheritage = document.getElementById("chosenheritage").value
+        if (chosenheritage == "mixed-blood") {
+            grade_tokens += 1
+        } else if (chosenheritage == "pure-blood") {
+            grade_tokens += 2
+    }
+    console.log(grade_tokens)
+}
 
 function rd6(num, min, max) {
     let outputarray = []
@@ -126,6 +151,9 @@ function rollname(gender) {
 
     }
 }
+function updatehealth() {
+    document.getElementById("hitpoints").innerHTML = 10 + +grit
+}
 
 function refreshmods() {
     for (i = 1; i < 6; i++) {
@@ -147,6 +175,7 @@ function refreshmods() {
     }
     updateskills();
     updatelearningmods();
+    updatehealth();
 }
 
 function addperk() {
@@ -159,26 +188,46 @@ function addperk() {
 
         perknamelookup = perklistlookup.value 
         if (perknamelookup != "No Perk Selected") {
+            perklist.push(perknamelookup)
             perkcontainer = document.createElement("button");
             perkcontainer.classList.add("perkbtn");
         
             perkcontainer.onclick = function() {
                 this.remove();
+                perklist.splice(this)
                 if (document.getElementById("perk-list").childElementCount == 0) {
-                    console.log("true")
                     document.getElementById("perk-list").innerHTML = "No perks currently selected."
+                    console.log(perklist)
                 }
             }
         
             perkname = document.createTextNode("X " + perknamelookup);
             perkcontainer.appendChild(perkname);
             document.getElementById("perk-list").appendChild(perkcontainer);
+            console.log(perklist)
             return;
 
         }
 
     }
 
+function rollgold() {
+    let rollset = rd6(6,1,8)
+    console.log(rollset)
+    let total = 0
+    for (i=0;i < rollset.length; i++) {
+        total += rollset[i];
+    }
+    total += 100
+    if (perklist.includes("Heir/Heiress")) {
+        document.getElementById("starting-gold").innerHTML = ("Starting galleons: " + total + " ( + 50 if you use your heir/heiress perks favor)")
+    } else if (perklist.includes("Wealthy Family")) {
+        document.getElementById("starting-gold").innerHTML = ("Starting galleons: " + total + " ( + 25 if you use your wealthy perks favor)")
+
+    } else {
+    document.getElementById("starting-gold").innerHTML = ("Starting galleons: " + total)
+    }
+}
 
 function updatedesc() {
     const perklistlookup = document.getElementById("perklist");
@@ -239,34 +288,36 @@ function rollstats(perk) {
 
 }
 
+
+
 function updateskills() {
-    skilldict["skill_magical_theory"] = smarts_mod
+    skilldict["skill_magical_theory"] = +smarts_mod + +mix_magical_theory_heritage_bonus + +pure_magical_theory_heritage_bonus
     document.getElementById("skill_magical_theory").innerHTML = skilldict["skill_magical_theory"]
-    skilldict["skill_muggle_knowledge"] = smarts_mod
+    skilldict["skill_muggle_knowledge"] = +smarts_mod + +mb_muggle_knowledge_heritage_bonus + +mix_muggle_knowledge_heritage_bonus
     document.getElementById("skill_muggle_knowledge").innerHTML = skilldict["skill_muggle_knowledge"]
-    skilldict["skill_insight"] = smarts_mod
+    skilldict["skill_insight"] = +smarts_mod
     document.getElementById("skill_insight").innerHTML = skilldict["skill_insight"]
-    skilldict["skill_determination"] = grit_mod
+    skilldict["skill_determination"] = +grit_mod + +mb_determination_heritage_bonus
     document.getElementById("skill_determination").innerHTML = skilldict["skill_determination"]
-    skilldict["skill_investigation"] = grit_mod
+    skilldict["skill_investigation"] = +grit_mod
     document.getElementById("skill_investigation").innerHTML = skilldict["skill_investigation"]
-    skilldict["skill_persuasion"] = charm_mod
+    skilldict["skill_persuasion"] = +charm_mod
     document.getElementById("skill_persuasion").innerHTML = skilldict["skill_persuasion"]
-    skilldict["skill_intimidation"] = charm_mod
+    skilldict["skill_intimidation"] = +charm_mod
     document.getElementById("skill_intimidation").innerHTML = skilldict["skill_intimidation"]
-    skilldict["skill_deception"] = charm_mod
+    skilldict["skill_deception"] = +charm_mod
     document.getElementById("skill_deception").innerHTML = skilldict["skill_deception"]
-    skilldict["skill_athletics"] = vigor_mod
+    skilldict["skill_athletics"] = +vigor_mod
     document.getElementById("skill_athletics").innerHTML = skilldict["skill_athletics"]
-    skilldict["skill_dexterity"] = vigor_mod
+    skilldict["skill_dexterity"] = +vigor_mod
     document.getElementById("skill_dexterity").innerHTML = skilldict["skill_dexterity"]
-    skilldict["skill_stealth"] = vigor_mod
+    skilldict["skill_stealth"] = +vigor_mod
     document.getElementById("skill_stealth").innerHTML = skilldict["skill_stealth"]
-    skilldict["skill_creature_care"] = loyalty_mod
+    skilldict["skill_creature_care"] = +loyalty_mod
     document.getElementById("skill_creature_care").innerHTML = skilldict["skill_creature_care"]
-    skilldict["skill_perception"] = loyalty_mod
+    skilldict["skill_perception"] = +loyalty_mod
     document.getElementById("skill_perception").innerHTML = skilldict["skill_perception"]
-    skilldict[ "skill_luck"] = loyalty_mod
+    skilldict[ "skill_luck"] = +loyalty_mod + +mb_luck_heritage_bonus
     document.getElementById("skill_luck").innerHTML = skilldict[ "skill_luck"]
 
 }
@@ -338,14 +389,42 @@ function remstat(x) {
 }
 
 
-    function addskill(skill) {
+function addskill(skill) {
         let skilltochange = document.getElementById(skill);
         skilltochange.innerHTML -= -1;
         skilldict[skill] -= -1
     }
     
-    function remskill(skill) {
+function remskill(skill) {
         let skilltochange = document.getElementById(skill);
         skilltochange.innerHTML -= 1;
         skilldict[skill] -= 1
+    }
+
+function updateheritage() {
+    
+    mb_muggle_knowledge_heritage_bonus = 0
+    mix_muggle_knowledge_heritage_bonus = 0
+    mix_magical_theory_heritage_bonus = 0
+    pure_magical_theory_heritage_bonus = 0
+    mb_determination_heritage_bonus = 0
+    mb_luck_heritage_bonus = 0
+
+    let chosenheritage = document.getElementById("chosenheritage").value
+    if (chosenheritage == "muggle-born") {
+        mb_muggle_knowledge_heritage_bonus = 5
+        mb_luck_heritage_bonus = 3
+        mb_determination_heritage_bonus = 1   
+    } else if (chosenheritage == "mixed-blood") {
+        mix_muggle_knowledge_heritage_bonus = 2
+        mix_magical_theory_heritage_bonus = 1
+    } else if (chosenheritage == "pure-blood") {
+        pure_magical_theory_heritage_bonus = 2
+    } else {
+
+    }
+    updatelevel();
+
+    
+    updateskills()
     }

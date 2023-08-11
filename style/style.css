@@ -81,3 +81,6 @@ th, td {
     width: 95%;
     border-radius: 15px;
 }
+#hitpoints {
+    color: darkred;
+}

@@ -45,19 +45,19 @@
         </div>
         <div class="input-group input-group-sm mb-3">
           <label class="input-group-text" for="inputGroupSelect01">Character Level:</label>
-          <select class="form-select" id="inputGroupSelect01">
+          <select class="form-select" id="level-selected" onchange="updatelevel()" >
             <option selected>1</option>
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="1">4</option>
-            <option value="2">5</option>
-            <option value="3">6</option>
-            <option value="1">7</option>
-            <option value="2">8</option>
-            <option value="3">9</option>
-            <option value="1">10</option>
-            <option value="2">11</option>
-            <option value="3">12</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
           </select>
         </div>
         <p>Your character's level determines their strengths, skills and starting spells. Typically, a character's level will be equal to their year at school. An adult's level will typically be 7 or higher depending on their age and level of knowledge. Professors may be level 9 or 10, for example. If you are playing starting as a first year student, your level should be 1 to reflect that they are in first-year.</p>
@@ -414,7 +414,7 @@
       <h5>Step 6: Heritage</h5>
       <p>Your character's heritage defines their upbringing, starting knowledge, and home-life. A character can be born to a muggle (non-wizarding) family, a mixed family with 1 wizard or witch, and 1 muggle parent, or a pureblood family with 2 wizard or witch parents.</p>
 
-      <h4>Muggle-Born</h4>
+      <h4>Muggle-Born Heritage</h4>
       <p>A Muggle-born character is typically entirely unaware of the wizarding world until receiving their acceptance letter to Hogwarts. Muggle-borns have in-depth knowledge of muggles and muggle society and are typically determined to prove themselves.</p><br>
       <ul>
         <li class="wandlist"> <span>Gain a +5 heritage bonus to your Muggle Knowledge skill for being raised by muggles.</span></li>
@@ -439,6 +439,110 @@
         <li class="wandlist"> <span>Add 1 casting level each to any two categories of magic. </span></li>
         <li class="wandlist"> <span>Choose 3 spells (Charm, Hex, Curse, Jinx) or potions from the first-year list, and add them to your spell-book as “Practiced”.</span></li>
       </ul>
+      <br><br>
+      <div class="input-group input-group-sm mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Heritage:</label>
+        <select class="form-select" onchange="updateheritage()" id="chosenheritage">
+          <option selected value="none">Select a Heritage</option>
+          <option value="muggle-born">Muggle-Born</option>
+          <option value="mixed-blood">Mixed Heritage</option>
+          <option value="pure-blood">Pure-Blood</option>
+        </select>
+      </div>
+      <h5>Step 7: Hit Points & Casting levels</h5>
+      <p>Your HP is equal to 10 + your grit. This dictates how much damage you can take. Your character's current hit points are: <span id="hitpoints">10</span>.</p><br>
+      <p>Your character's casting levels begin at 0 unless you have gained a casting level from your heritage.</p><br><br>
+
+      <div style="flex:1 1 auto">
+        <table class="table-custom">
+          <thead>
+            <tr scope="col">
+              <td colspan="3"><h5>Casting Levels</h5></td>
+            </tr>
+            <tr>
+              <th scope="col"><h4>Name</h4></th>
+              <th scope="col"><h4>Virtue</h4></th>
+              <th scope="col"><h4>Casting Level</h4></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Charmwork</td>
+              <td>Smarts</td>
+              <td id="casting_level_charmwork">0</td>
+            </tr>
+            <tr>
+              <td>Divinations</td>
+              <td>Smarts</td>
+              <td id="casting_level_divinations">0</td>
+            </tr>
+            <tr>
+              <td>Defensive Magic</td>
+              <td>Grit</td>
+              <td id="casting_level_defensive">0</td>
+            </tr>
+            <tr>
+              <td>Potion-Making</td>
+              <td>Grit</td>
+              <td id="casting_level_potions">0</td>
+            </tr>
+            <tr>
+              <td>Curses</td>
+              <td>Charm</td>
+              <td id="casting_level_curses">0</td>
+            </tr>
+            <tr>
+              <td>Hexes</td>
+              <td>Charm</td>
+              <td id="casting_level_hexes">0</td>
+            </tr>
+            <tr>
+              <td>Jinxes</td>
+              <td>Charm</td>
+              <td id="casting_level_jinxes">0</td>
+            </tr>
+            <tr>
+              <td>Offensive Magic</td>
+              <td>Vigor</td>
+              <td id="casting_level_offensive">0</td>
+            </tr>
+            <tr>
+              <td>Transfiguration</td>
+              <td>Vigor</td>
+              <td id="casting_level_transfiguration">0</td>
+            </tr>
+            <tr>
+              <td>Herbological Preparations</td>
+              <td>Loyalty</td>
+              <td id="casting_level_herbology">0</td>
+            </tr>
+            <tr>
+              <td>Healing</td>
+              <td>Loyalty</td>
+              <td id="casting_level_healing">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      
+      <h5>Step 8: Signature Spell</h5>
+      <p>Each student may choose one “signature spell” which can only be changed once per term, and can be chosen at any time. This signature spell gains a +1 modifier on top of 
+        its “practice-level modifier”. You can note this under your “spell book”, though it’s not recommended to choose it immediately.</p><br>
+      <h5>Step 9: Starting Galleons</h5>
+      <p>You begin with 100 + 6D8 galleons to buy supplies. Pocket money will not arrive unil the second week of the term. If your character is starting with the "Wealthy" or "Heir/Heiress" perk, they can use their favor immediately.</p>
+      <br>
+      <button onclick="rollgold()" class="btn btn-sm btn-outline-secondary" type="button" id="goldroll"><i class="fa-solid fa-dice" style="color: #af804b;"></i></button><br>
+      <br><span id="starting-gold">Starting galleons: </span> 
+      <h5>Step 10: Purchase supplies</h5>
+      <p>This step is to be coordinated with your DM. The rulebook contains an example of a supplies list and hogwarts acceptance letter.</p>
+      <h5>Step 11: Select classes</h5>
+      <p>Choose the four core classes you will be taking for term 1, or ask your DM which classes are available if you are starting in a later year.</p>
+      <h5>Step 12: House and Patronus</h5>
+      <p>Coordinate with your DM to proceed with the sorting ceremony. You may decide your patronus now, or later when you learn the patronus charm.</p>
+      <h5>Step 13: Character background</h5>
+      <p>Work out your character's background, flaws, bonds, fears, and motivations.</p>
+
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
