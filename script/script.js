@@ -149,29 +149,35 @@ function refreshmods() {
 
 function addperk() {
     const perklistlookup = document.getElementById("perklist");
-    perkcontainer = document.createElement("button");
-    perkcontainer.classList.add("perkbtn");
-    perknamelookup = perklistlookup.value 
+    if (perklistlookup.value != "No perks currently selected") {
+        perknamelookup = perklistlookup.value 
+        if (perknamelookup != "No Perk Selected") {
+            perkcontainer = document.createElement("button");
+            perkcontainer.classList.add("perkbtn");
+        
+            perkcontainer.onclick = function() {
+                this.remove();
+                if (document.getElementById("perk-list").childElementCount == 0) {
+                    console.log("true")
+                    document.getElementById("perk-list").innerHTML = "No perks currently selected."
+                }
+            }
+        
+            perkname = document.createTextNode("X " + perknamelookup);
+            perkcontainer.appendChild(perkname);
+            document.getElementById("perk-list").appendChild(perkcontainer);
+            return;
 
-    perkcontainer.onclick = function() {
-        this.remove();
-        if (document.getElementById("perk-list").childElementCount == 0) {
-            console.log("true")
-            document.getElementById("perk-list").innerHTML = "No perks currently selected."
         }
-    }
 
-    perkname = document.createTextNode("X " + perknamelookup);
-    perkcontainer.appendChild(perkname);
-    document.getElementById("perk-list").appendChild(perkcontainer);
-    return;
+    }
 }
 
 function updatedesc() {
     const perklistlookup = document.getElementById("perklist");
     const perk_desc = document.getElementById("perk-description");
     perknamelookup = perklistlookup.value 
-    for (let i = 0; i < perks.length; i++) {
+    for (i = 0; i < perks.length; i++) {
         let perk = perks[i];
         if (perk.name == perknamelookup) {
             perk_desc.innerHTML = perk.desc
@@ -180,7 +186,7 @@ function updatedesc() {
 }
 
 function ListFiller() {
-    for (let i = 0; i < perks.length; i++) {
+    for (i = 0; i < perks.length; i++) {
         let perk = perks[i];
         const perklistlookup = document.getElementById("perklist");
         const perklistentry = document.createElement("option");
