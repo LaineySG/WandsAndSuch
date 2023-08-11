@@ -27,13 +27,14 @@ h4 {
     font-size: 18px;
     font-weight:600;
 }
-li:before {
+.wandlist:before {
   content: "\f72b"; /* FontAwesome Unicode */
   font-family: FontAwesome;
   display: inline-block;
   margin-left: 50px;
   width: var(--icon-space);
 }
+
 
 li span {
     margin-left: 15px;
