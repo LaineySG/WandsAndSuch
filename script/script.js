@@ -13,6 +13,9 @@ var vigor_mod = 0
 var loyalty_mod = 0
 
 var perklist = []
+var perkbool
+
+var prunedrollset = []
 
 var learning_mod_charmwork = 0
 var learning_mod_divination = 0
@@ -51,6 +54,8 @@ var skilldict = {
     "skill_perception": 0,
     "skill_luck": 0,
 }
+
+let perkmod = []
 
 var casting_lvl_charmwork = 0
 var casting_lvl_divination = 0
@@ -108,7 +113,6 @@ function updatelevel() {
         } else if (chosenheritage == "pure-blood") {
             grade_tokens += 2
     }
-    console.log(grade_tokens)
 }
 
 function rd6(num, min, max) {
@@ -120,7 +124,6 @@ function rd6(num, min, max) {
 }
 
 function gethighestvalues(inputarray,num) {
-    console.log(inputarray)
     let toremove = inputarray.length - num
     for (i=0 ; i<toremove ; i++) {
         let minval = Math.min.apply(Math, inputarray)
@@ -141,9 +144,9 @@ function rollname(gender) {
     } else if (gender == 3) {
         let coinflip = Math.ceil(Math.random() * 2)
         if (coinflip == 1) {
-            let firstnameoutput = female_first_names[Math.floor(Math.random() * female_first_names.length)];
+            var firstnameoutput = female_first_names[Math.floor(Math.random() * female_first_names.length)];
         } else {
-            let firstnameoutput = male_first_names[Math.floor(Math.random() * male_first_names.length)];
+            var firstnameoutput = male_first_names[Math.floor(Math.random() * male_first_names.length)];
         }
         let lastnameoutput = last_names[Math.floor(Math.random() * last_names.length)];
         charactername = firstnameoutput.concat(" ", lastnameoutput)
@@ -156,6 +159,8 @@ function updatehealth() {
 }
 
 function refreshmods() {
+
+
     for (i = 1; i < 6; i++) {
         let get_score = "";
         get_score = get_score.concat("stat",i,"score");
@@ -165,7 +170,11 @@ function refreshmods() {
         let currentmod = document.getElementById(assign_mod);
         currentmod.value = Math.ceil(currentscore.value / 2) - 2
 
-        if (i==1) {smarts = currentscore.value; smarts_mod = currentmod.value}
+
+        if (i==1) {
+            smarts = currentscore.value; 
+            smarts_mod = currentmod.value
+        }
         else if (i == 2) {grit = currentscore.value; grit_mod = currentmod.value}
         else if (i == 3) {charm = currentscore.value; charm_mod = currentmod.value}
         else if (i == 4) {vigor = currentscore.value; vigor_mod = currentmod.value}
@@ -181,7 +190,6 @@ function refreshmods() {
 function addperk() {
     const perklistlookup = document.getElementById("perklist");
     const perklistlookup2 = document.getElementById("perk-list");
-    console.log(perklistlookup.innerHTML)
     if (perklistlookup2.innerHTML == "No perks currently selected.") {
         perklistlookup2.innerHTML = ""
     }
@@ -191,21 +199,23 @@ function addperk() {
             perklist.push(perknamelookup)
             perkcontainer = document.createElement("button");
             perkcontainer.classList.add("perkbtn");
+            perkcontainer.value = perknamelookup
         
             perkcontainer.onclick = function() {
                 this.remove();
-                perklist.splice(this)
+                let idx = perklist.indexOf(this.value)
+                perklist.splice(idx, 1)
+                setvirtues()
                 if (document.getElementById("perk-list").childElementCount == 0) {
                     document.getElementById("perk-list").innerHTML = "No perks currently selected."
-                    console.log(perklist)
+                    
                 }
             }
         
             perkname = document.createTextNode("X " + perknamelookup);
             perkcontainer.appendChild(perkname);
             document.getElementById("perk-list").appendChild(perkcontainer);
-            console.log(perklist)
-            return;
+            setvirtues()
 
         }
 
@@ -213,7 +223,6 @@ function addperk() {
 
 function rollgold() {
     let rollset = rd6(6,1,8)
-    console.log(rollset)
     let total = 0
     for (i=0;i < rollset.length; i++) {
         total += rollset[i];
@@ -252,9 +261,10 @@ function ListFiller() {
     }
 }
 
-function rollstats(perk) {
+function rollstats(perkinput) {
+    perkbool = perkinput
     let rollset = rd6(8,1,6)
-    let prunedrollset = gethighestvalues(rollset,5)
+    prunedrollset = gethighestvalues(rollset,5)
     let total = 0
     for (i=0;i < prunedrollset.length; i++) {
         total += prunedrollset[i];
@@ -262,15 +272,39 @@ function rollstats(perk) {
     let totalform = document.getElementById("totalscore");
     let output = ""
     let result = ""
-    if (perk == true) {
+    if (perkbool == true) {
         result = output.concat(total, " ( + 2) = ", (total + 2));
     } else {
         result = total;
     }
     totalform.value = result;
 
+    setvirtues()
+
+}
+
+function setvirtues() {
+    
     let randombonus = Math.ceil(Math.random() * 5)
-    console.log(randombonus)
+
+    
+    for (i=0; i<5; i++) {
+        perkmod[i] = 0
+    }
+
+    if (perklist.includes("Metamorphmagus")) {
+        perkmod[2] +=1
+    }
+    if (perklist.includes("Parseltongue")) {
+        perkmod[2] +=1
+    }
+    if (perklist.includes("Lucky")) {
+        perkmod[4] +=1
+    }
+    if (perklist.includes("Lycanthropy")) {
+        perkmod[1] += 1
+        perkmod[3] += 1
+    }
 
     for (i=1;i<= prunedrollset.length;i++) {
         let to_assign = "";
@@ -279,16 +313,14 @@ function rollstats(perk) {
         to_assign_mod = to_assign_mod.concat("stat",i,"mod");
         let currentscore = document.getElementById(to_assign);
         let currentmod = document.getElementById(to_assign_mod);
-        if (i == randombonus) {prunedrollset[i-1] += 2}
-        currentscore.value = prunedrollset[i-1]
-        currentmod.value = Math.ceil(prunedrollset[i-1] / 2) - 2
+        if (i == randombonus && perkbool == true) {prunedrollset[i-1] += 2; perkbool=false}
+        valuetoset = +prunedrollset[i-1] + +perkmod[i-1]
+        currentscore.value = valuetoset
+        currentmod.value = Math.ceil(valuetoset / 2) - 2
     }
     refreshmods()
 
-
 }
-
-
 
 function updateskills() {
     skilldict["skill_magical_theory"] = +smarts_mod + +mix_magical_theory_heritage_bonus + +pure_magical_theory_heritage_bonus
@@ -360,7 +392,6 @@ function addstat(x) {
     let totalform = document.getElementById("totalscore");
     newtotal = totalform.value
     newtotal = newtotal.substring(newtotal.length-2);
-    console.log(newtotal)
     newtotal -= -1
     let output = ""
     totalform.value = output.concat(newtotal);
@@ -379,7 +410,6 @@ function remstat(x) {
         let totalform = document.getElementById("totalscore");
         newtotal = totalform.value;
         newtotal = newtotal.substring(newtotal.length-2);
-        console.log(newtotal);
         newtotal -= 1;
         let output = ""
         totalform.value = output.concat(newtotal);
