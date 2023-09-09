@@ -12,6 +12,8 @@ var charm_mod = 0
 var vigor_mod = 0
 var loyalty_mod = 0
 
+var bonus_skill_points = 10
+
 var perklist = []
 var perkbool
 
@@ -30,6 +32,7 @@ var learning_mod_herbology = 0
 var learning_mod_healing = 0
 
 var grade_tokens = 0
+var heritage_casting_level_bonuses = 0
 
 var mb_muggle_knowledge_heritage_bonus = 0
 var mix_muggle_knowledge_heritage_bonus = 0
@@ -54,20 +57,21 @@ var skilldict = {
     "skill_perception": 0,
     "skill_luck": 0,
 }
+var CastLevelDict = {
+    "casting_lvl_charmwork": 0,
+    "casting_lvl_divination": 0,
+    "casting_lvl_defensive": 0,
+    "casting_lvl_potions": 0,
+    "casting_lvl_curses": 0,
+    "casting_lvl_hexes": 0,
+    "casting_lvl_jinxes": 0,
+    "casting_lvl_offensive": 0,
+    "casting_lvl_transfiguration": 0,
+    "casting_lvl_herbology": 0,
+    "casting_lvl_healing": 0,
+}
 
 let perkmod = []
-
-var casting_lvl_charmwork = 0
-var casting_lvl_divination = 0
-var casting_lvl_defensive = 0
-var casting_lvl_potions = 0
-var casting_lvl_curses = 0
-var casting_lvl_hexes = 0
-var casting_lvl_jinxes = 0
-var casting_lvl_offensive = 0
-var casting_lvl_transfiguration = 0
-var casting_lvl_herbology = 0
-var casting_lvl_healing = 0
 
 var level = 1
 /* Global variables */
@@ -103,16 +107,35 @@ function includeHTML() {
 function updatelevel() {
     level = document.getElementById("level-selected").value
     if (level > 1) {
-        grade_tokens = (40 * (level-1))
+        grade_tokens = (20 * (level-1))
     } else {
         grade_tokens = 0
     }
         let chosenheritage = document.getElementById("chosenheritage").value
+        heritage_casting_level_bonuses = 0
         if (chosenheritage == "mixed-blood") {
-            grade_tokens += 1
+            heritage_casting_level_bonuses = 1
         } else if (chosenheritage == "pure-blood") {
-            grade_tokens += 2
+            heritage_casting_level_bonuses = 2
     }
+    updateTokenCastLevelElements();
+}
+
+function updateTokenCastLevelElements() {
+    document.getElementById("heritage_casting_level_count").innerHTML = heritage_casting_level_bonuses
+    if (heritage_casting_level_bonuses == 0) {
+        document.getElementById("heritage_bonus").style.display = "none"
+    } else {
+    document.getElementById("heritage_bonus").style.display = "block"
+}
+
+    if (grade_tokens == 0) {
+        document.getElementById("level_bonus").style.display = "none"
+    } else {
+        document.getElementById("level_bonus").style.display = "block"
+    }
+
+    document.getElementById("gradetokens").innerHTML = grade_tokens
 }
 
 function rd6(num, min, max) {
@@ -154,6 +177,7 @@ function rollname(gender) {
 
     }
 }
+
 function updatehealth() {
     document.getElementById("hitpoints").innerHTML = 10 + +grit
 }
@@ -420,16 +444,65 @@ function remstat(x) {
 
 
 function addskill(skill) {
+    if (bonus_skill_points > 0) {
         let skilltochange = document.getElementById(skill);
         skilltochange.innerHTML -= -1;
         skilldict[skill] -= -1
+
+        let remaining_point_element = document.getElementById("remaining_points");
+        bonus_skill_points -= 1;
+        remaining_point_element.innerHTML = bonus_skill_points;
     }
+}
     
 function remskill(skill) {
         let skilltochange = document.getElementById(skill);
         skilltochange.innerHTML -= 1;
         skilldict[skill] -= 1
+        
+        let remaining_point_element = document.getElementById("remaining_points");
+        bonus_skill_points += 1;
+        remaining_point_element.innerHTML = bonus_skill_points;
     }
+
+function addCastLevel(castStat) {
+    let CastLvltochange = document.getElementById(castStat);
+    if (heritage_casting_level_bonuses > 0 && parseInt(CastLvltochange.innerHTML) < 1) {
+        heritage_casting_level_bonuses -= 1;
+        CastLvltochange.innerHTML -= -1;
+        CastLevelDict[castStat] += 1;
+
+    } else if (grade_tokens > 0) {
+        let costToUpgrade = +CastLvltochange.innerHTML + 1
+        if (grade_tokens >= costToUpgrade) {
+            CastLvltochange.innerHTML -= -1;
+            CastLevelDict[castStat] += 1;
+            grade_tokens -= costToUpgrade;
+        }
+
+    }
+    
+    updateTokenCastLevelElements();
+}
+function remCastLevel(castStat) {
+        let CastLvltochange = document.getElementById(castStat);
+        if (CastLvltochange.innerHTML == 1 && grade_tokens == 0) { /* If level is only 1 and no grade tokens*/
+            heritage_casting_level_bonuses += 1;
+            CastLvltochange.innerHTML -= 1;
+            CastLevelDict[castStat] -= 1;
+
+        } else if (CastLvltochange.innerHTML > 0) {
+            let payToDownGrade = +CastLvltochange.innerHTML
+            CastLvltochange.innerHTML -= 1;
+            CastLevelDict[castStat] -= 1;
+            grade_tokens += payToDownGrade;
+    
+        }
+        
+        updateTokenCastLevelElements();
+    
+    
+}
 
 function updateheritage() {
     
